@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lachlan's Cockie Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Fixed video background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        /* Fallback background image */
+        .fallback-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background-image: url('IMG_0752.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Content container */
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Video section - this determines how long the video plays */
+        .video-section {
+            height: 300vh;
+            /* 3x viewport height = plenty of scroll time */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .video-content {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 3rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            margin: 2rem;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .video-text {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        /* After video section - different content */
+        .post-video-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .post-video-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .post-video-content h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+        }
+
+        .post-video-content p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin: 2rem 0;
+            color: #f0f0f0;
+        }
+
+        .cockie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .cockie-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .cockie-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .cockie-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .video-text {
+                font-size: 1.2rem;
+            }
+
+            .video-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Fallback background -->
+    <div class="fallback-bg"></div>
+
+    <!-- Video background -->
+    <video class="video-background" id="bgVideo" muted>
+        <source src="sample_0.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Scroll progress indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        Video Progress: 0%
+    </div>
+
+    <div class="content">
+        <!-- Video section - scrolls over the video -->
+        <section class="video-section" id="videoSection">
+            <div class="video-content">
+                <h1>Lachlan's Cookie Co.</h1>
+                <p class="video-text">Hand-baked cookies made with love. Classic flavours, bold new twists, and plenty
+                    of smiles.</p>
+                <p class="video-text">Scroll to sample our menu, learn how to order, and find contact details.</p>
+                <p class="video-text">Fresh batches daily • Local ingredients • Custom orders welcome</p>
+                <p style="margin-top:1.5rem;"><button id="orderNowBtn"
+                        style="background:#f6c85f;border:none;padding:0.8rem 1.2rem;border-radius:8px;font-weight:700;cursor:pointer">Order
+                        Now</button></p>
+            </div>
+        </section>
+
+        <!-- Post-video section - new content after video ends -->
+        <section class="post-video-section">
+            <div class="post-video-content">
+                <h2>🍪 Lachlan's Cookie Menu</h2>
+                <p>We bake a wide variety of cookies — classics, new twists, and dietary-friendly options. Below are our
+                    regular offerings. For custom or bulk orders, use the order form.</p>
+
+                <div class="cockie-grid">
+                    <div class="cockie-card">
+                        <h3>� Chocolate Chip</h3>
+                        <p>Classic buttery cookie loaded with semi-sweet chocolate chips. Crispy edges, gooey center.
+                        </p>
+                        <p><strong>Size:</strong> Single / Half-dozen / Dozen • <strong>From:</strong> $2.50</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>🍪 Double Chocolate</h3>
+                        <p>Deep chocolate dough with chocolate chunks and a hint of espresso for depth.</p>
+                        <p><strong>From:</strong> $2.80</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>🥜 Peanut Butter Crunch</h3>
+                        <p>Rich peanut butter cookies with a satisfying crunch and optional chocolate drizzle.</p>
+                        <p><strong>From:</strong> $2.50</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>🍎 Oatmeal Raisin</h3>
+                        <p>Hearty oats, plump raisins, and warming spices — a nostalgic favourite.</p>
+                        <p><strong>From:</strong> $2.20</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>🍋 Lemon Zest</h3>
+                        <p>Light, zesty cookies with a lemon glaze — bright and refreshing.</p>
+                        <p><strong>From:</strong> $2.60</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>🎄 Ginger Spice</h3>
+                        <p>Seasonal favourite with molasses, ginger, and cinnamon. Great for gift boxes.</p>
+                        <p><strong>From:</strong> $2.40</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>🥥 White Chocolate & Macadamia</h3>
+                        <p>Buttery cookie studded with white chocolate and crunchy macadamia nuts.</p>
+                        <p><strong>From:</strong> $3.00</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>🌱 Vegan Date & Walnut</h3>
+                        <p>Plant-based, naturally sweetened cookies made with dates, walnuts, and oats.</p>
+                        <p><strong>From:</strong> $2.70</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>� Gluten-Free Almond</h3>
+                        <p>Almond flour base, chewy texture, and a subtle vanilla finish — gluten-free friendly.</p>
+                        <p><strong>From:</strong> $3.20</p>
+                    </div>
+
+                    <div class="cockie-card">
+                        <h3>✨ Surprise Box</h3>
+                        <p>Can’t decide? Choose a Surprise Box and we’ll pack 12 assorted cookies curated by Lachlan.
+                        </p>
+                        <p><strong>Price:</strong> $28.00</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top:2rem">How to Order</h3>
+                <p>Use the form below to place an order. Include your selection, quantity, preferred pickup/delivery
+                    date, and any dietary notes. We'll follow up to confirm availability and pickup/delivery details.
+                </p>
+
+                <form id="orderForm"
+                    style="margin-top:1.5rem;display:grid;gap:0.8rem;max-width:700px;margin-left:auto;margin-right:auto;text-align:left;">
+                    <label>Name<input type="text" name="name" required placeholder="Your name"
+                            style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid rgba(0,0,0,0.2)"></label>
+                    <label>Email<input type="email" name="email" required placeholder="you@example.com"
+                            style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid rgba(0,0,0,0.2)"></label>
+                    <label>Phone (optional)<input type="tel" name="phone" placeholder="0400 000 000"
+                            style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid rgba(0,0,0,0.2)"></label>
+                    <label>Order details (cookie type, quantity)<textarea name="details" required
+                            placeholder="e.g. 2 dozen Chocolate Chip, 6 Lemon Zest" rows="3"
+                            style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid rgba(0,0,0,0.2)"></textarea></label>
+                    <label>Pickup / Delivery date<input type="date" name="date" required
+                            style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid rgba(0,0,0,0.2)"></label>
+                    <label>Pickup or Delivery<select name="method"
+                            style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid rgba(0,0,0,0.2)">
+                            <option>Pickup</option>
+                            <option>Delivery</option>
+                        </select></label>
+                    <button type="submit"
+                        style="background:#f6c85f;border:none;padding:0.8rem 1rem;border-radius:8px;font-weight:700;cursor:pointer">Send
+                        Order</button>
+                </form>
+
+                <h3 style="margin-top:2rem">Allergens & Notes</h3>
+                <p>Most cookies contain nuts, dairy, eggs, gluten, or soy. Vegan and gluten-free options are clearly
+                    marked above. If you have severe allergies, please contact us before ordering.</p>
+
+                <h3 style="margin-top:2rem">Contact</h3>
+                <p>Email: <a href="mailto:lachlan@cookies.example"
+                        style="color:#fff;text-decoration:underline">lachlan@cookies.example</a></p>
+                <p>Phone / SMS: <a href="tel:+61400000000" style="color:#fff;text-decoration:underline">0400 000 000</a>
+                </p>
+                <p style="margin-top:1rem">Follow us on Instagram: <a href="#"
+                        style="color:#fff;text-decoration:underline">@lachlanscookies</a></p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const video = document.getElementById('bgVideo');
+        const videoSection = document.getElementById('videoSection');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        const orderForm = document.getElementById('orderForm');
+        const orderNowBtn = document.getElementById('orderNowBtn');
+
+        // Wait for video to load
+        video.addEventListener('loadedmetadata', function () {
+            console.log('Video loaded. Duration:', video.duration);
+        });
+
+        window.addEventListener('scroll', function () {
+            const scrollTop = window.pageYOffset;
+            const videoSectionHeight = videoSection.offsetHeight;
+            const videoSectionTop = videoSection.offsetTop;
+            const videoSectionBottom = videoSectionTop + videoSectionHeight;
+
+            // Check if we're in the video section
+            if (scrollTop >= videoSectionTop && scrollTop <= videoSectionBottom) {
+                // Calculate progress through the video section (0 to 1)
+                const sectionProgress = (scrollTop - videoSectionTop) / videoSectionHeight;
+                const clampedProgress = Math.max(0, Math.min(1, sectionProgress));
+
+                // Update video time based on scroll position
+                if (video.duration) {
+                    // try/catch because some browsers restrict setting currentTime during scroll
+                    try {
+                        video.currentTime = clampedProgress * video.duration;
+                    } catch (e) {
+                        // ignore
+                    }
+                }
+
+                // Update indicator
+                scrollIndicator.textContent = `Video Progress: ${Math.round(clampedProgress * 100)}%`;
+                scrollIndicator.style.opacity = '1';
+            } else if (scrollTop > videoSectionBottom) {
+                // Past the video section
+                scrollIndicator.style.opacity = '0.3';
+                scrollIndicator.textContent = 'Video Complete! 🎬';
+            } else {
+                // Before the video section
+                scrollIndicator.style.opacity = '0.7';
+                scrollIndicator.textContent = 'Scroll to play video';
+            }
+        });
+
+        // Handle video loading errors gracefully
+        video.addEventListener('error', function () {
+            console.log('Video failed to load, fallback background will show');
+            document.querySelector('.fallback-bg').style.opacity = '1';
+        });
+
+        // Order Now button scrolls to the form
+        orderNowBtn.addEventListener('click', function () {
+            const formTop = orderForm.getBoundingClientRect().top + window.pageYOffset - 40;
+            window.scrollTo({ top: formTop, behavior: 'smooth' });
+            // focus name input after short delay
+            setTimeout(() => {
+                const firstInput = orderForm.querySelector('input[name="name"]');
+                if (firstInput) firstInput.focus();
+            }, 700);
+        });
+
+        // Small visual toast for confirmations
+        function showToast(msg, duration = 4000) {
+            const t = document.createElement('div');
+            t.textContent = msg;
+            Object.assign(t.style, {
+                position: 'fixed',
+                right: '20px',
+                bottom: '20px',
+                background: 'rgba(0,0,0,0.75)',
+                color: '#fff',
+                padding: '0.8rem 1rem',
+                borderRadius: '8px',
+                zIndex: 200,
+                fontFamily: 'sans-serif',
+                boxShadow: '0 6px 18px rgba(0,0,0,0.35)'
+            });
+            document.body.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; }, duration - 600);
+            setTimeout(() => { t.remove(); }, duration);
+        }
+
+        // Handle order form submission: open mail client with prefixed email and show toast
+        orderForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const data = new FormData(orderForm);
+            const name = data.get('name')?.trim();
+            const email = data.get('email')?.trim();
+            const phone = data.get('phone')?.trim();
+            const details = data.get('details')?.trim();
+            const date = data.get('date')?.trim();
+            const method = data.get('method')?.trim();
+
+            if (!name || !email || !details || !date) {
+                showToast('Please fill name, email, order details and date.');
+                return;
+            }
+
+            const subject = `New Cookie Order from ${name}`;
+            let body = `Name: ${name}\nEmail: ${email}\n`;
+            if (phone) body += `Phone: ${phone}\n`;
+            body += `Order details:\n${details}\n\nPickup/Delivery: ${method}\nDate: ${date}\n`;
+            body += `\n--\nSent from Lachlan's Cookie Co. website`;
+
+            const mailto = `mailto:lachlan@cookies.example?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            // Try to open the mail client
+            window.location.href = mailto;
+
+            showToast('Order prepared. Your email client should open to send the order.');
+            // optionally, reset form after short delay
+            setTimeout(() => { orderForm.reset(); }, 1200);
+        });
+    </script>
+</body>
+
+</html>
